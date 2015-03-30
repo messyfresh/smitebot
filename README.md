@@ -1,2 +1,2 @@
-# smitebot
-A Twitch Chat bot to display smite Stats
+# SmiteBot
+A Twitch Chat bot to display Smite stats.

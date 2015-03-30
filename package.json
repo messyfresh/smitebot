@@ -1,0 +1,28 @@
+{
+  "name": "SmiteBot",
+  "description": "A Twitch chat bot to display Smite stats",
+  "version": "0.0.1",
+  "maintainers": [
+    {
+      "name": "messyfresh",
+      "email": "messyfresh@gmail.com",
+      "web": ""
+    }
+  ],
+  "dependencies": {
+    "irc": "^0.3.9",
+    "request": "^2.54.0"
+  },
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://github.com/messyfresh/smitebot.git"
+    }
+  ],
+  "licenses": [
+    {
+      "name": "MIT License",
+      "url": "https://github.com/messyfresh/smitebot/blob/master/LICENSE"
+    }
+  ]
+}
