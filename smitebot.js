@@ -18,7 +18,7 @@ var client = new irc.Client('irc.twitch.tv', twitchUser, {
 client.addListener('message', function(from, to, message) {
     var msgArray = message.split(" ");
     if (message.toLowerCase() == "hi elo bot") {
-        client.say(ircChannel, "Hello " + from);
+        client.say(ircChannel, "Hello Human Bot" + from);
     }
     if (msgArray[0] == '!elo') {
         request({
