@@ -4,7 +4,8 @@
 
 var irc = require('irc'),
     request = require('request'),
-    ircChannel = '#remedeez',
+    cheerio = require('cheerio'),
+    ircChannel = '#username',
     twitchUser = process.env.twitchUser,
     twitchPass = process.env.twitchPass;
 
@@ -86,6 +87,7 @@ client.addListener('message', function(from, to, message) {
     }
 
     //TODO: implement better error handling for players with stupid characters in their name
+    /* not quite ready for prime time
     if (msgArray[0] == '!matchinfo') {
         request({
             url: 'http://localhost:5000/api/getplayerstatus/' + msgArray[1]
@@ -128,6 +130,39 @@ client.addListener('message', function(from, to, message) {
                        } // End 'for' statement
                    }
                });
+            }
+        });
+    }
+     end comment of !matchinfo */
+
+    if(msgArray[0] == '!winarena'){
+        request({
+            url: 'http://smite.guru/stats/' + msgArray[1]
+        }, function(error, response, html){
+            if(!error){
+                var $ = cheerio.load(html);
+
+                var arenaPlayed, arenaWin;
+                var json = { arenaPlayed: '', arenaWin: ''};
+
+                //start the scraping!!!
+                $('#casual').filter(function(){
+                   var data = $(this);
+
+                    arenaPlayed = data.children().first().children().first().children().eq('2')
+                        .children().eq('0').children().eq('1').children().eq('0').children()
+                        .eq('1').children().eq('0').children('strong').text();
+
+                    json.arenaPlayed = arenaPlayed;
+
+                    arenaWin = data.children().first().children().first().children().eq('2')
+                        .children().eq('0').children().eq('1').children().eq('0').children()
+                        .eq('2').children().eq('0').children('strong').text();
+
+                    json.arenaWin = arenaWin;
+                    client.say(ircChannel, msgArray[1] + " has played " + json.arenaPlayed + " arena " +
+                    "games with a winrate of " + json.arenaWin);
+                });
             }
         });
     }
