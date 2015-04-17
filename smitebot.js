@@ -135,7 +135,7 @@ client.addListener('message', function(from, to, message) {
     }
      end comment of !matchinfo */
 
-    if(msgArray[0] == '!winarena'){
+    if(msgArray[0] == '!arena'){
         request({
             url: 'http://smite.guru/stats/' + msgArray[1]
         }, function(error, response, html){
@@ -162,6 +162,70 @@ client.addListener('message', function(from, to, message) {
                     json.arenaWin = arenaWin;
                     client.say(ircChannel, msgArray[1] + " has played " + json.arenaPlayed + " arena " +
                     "games with a winrate of " + json.arenaWin);
+                });
+            }
+        });
+    }
+    if(msgArray[0] == '!assault'){
+        request({
+            url: 'http://smite.guru/stats/' + msgArray[1]
+        }, function(error, response, html){
+            if(!error){
+                var $ = cheerio.load(html);
+
+                var assaultPlayed, assaultWin;
+                var json = { assaultPlayed: '', assaultWin: ''};
+
+                //start the scraping!!!
+                $('#casual').filter(function(){
+                    var data = $(this);
+
+                    assaultPlayed = data.children().first().children().first().children().eq('3')
+                        .children().eq('0').children().eq('1').children().eq('0').children()
+                        .eq('1').children().eq('0').children('strong').text();
+
+                    json.assaultPlayed = assaultPlayed;
+
+                    assaultWin = data.children().first().children().first().children().eq('3')
+                        .children().eq('0').children().eq('1').children().eq('0').children()
+                        .eq('2').children().eq('0').children('strong').text();
+
+                    json.assaultWin = assaultWin;
+
+                    client.say(ircChannel, msgArray[1] + " has played " + json.assaultPlayed + " assault " +
+                    "games with a winrate of " + json.assaultWin);
+                });
+            }
+        });
+    }
+    if(msgArray[0] == '!siege'){
+        request({
+            url: 'http://smite.guru/stats/' + msgArray[1]
+        }, function(error, response, html){
+            if(!error){
+                var $ = cheerio.load(html);
+
+                var siegePlayed, siegeWin;
+                var json = { siegePlayed: '', siegeWin: ''};
+
+                //start the scraping!!!
+                $('#casual').filter(function(){
+                    var data = $(this);
+
+                    siegePlayed = data.children().first().children().first().children().eq('5')
+                        .children().eq('0').children().eq('1').children().eq('0').children()
+                        .eq('1').children().eq('0').children('strong').text();
+
+                    json.siegePlayed = siegePlayed;
+
+                    siegeWin = data.children().first().children().first().children().eq('5')
+                        .children().eq('0').children().eq('1').children().eq('0').children()
+                        .eq('2').children().eq('0').children('strong').text();
+
+                    json.siegeWin = siegeWin;
+
+                    client.say(ircChannel, msgArray[1] + " has played " + json.siegePlayed + " siege " +
+                    "games with a winrate of " + json.siegeWin);
                 });
             }
         });
